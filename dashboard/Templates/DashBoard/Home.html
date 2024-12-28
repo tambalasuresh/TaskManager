@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        .correct-answer {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome To, {{ user.name }}</h1>
+
+    <h2>Questions</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Questions</th>
+                <th>Answer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+                <tr>
+                    <td>{{ question.question }}</td>
+                    <td>
+                        <ul>
+                            <!-- Display each answer and highlight the correct one -->
+                            <li class="{% if question.correct_answer == question.answer_1 %}correct-answer{% endif %}">{{ question.answer_1 }}</li>
+                            <li class="{% if question.correct_answer == question.answer_2 %}correct-answer{% endif %}">{{ question.answer_2 }}</li>
+                            <li class="{% if question.correct_answer == question.answer_3 %}correct-answer{% endif %}">{{ question.answer_3 }}</li>
+                            <li class="{% if question.correct_answer == question.answer_4 %}correct-answer{% endif %}">{{ question.answer_4 }}</li>
+                        </ul>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="1">No team categories available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Players</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Nationality</th>
+                <th>Date of Birth</th>
+                <th>Team</th>
+                <th>Player Type</th>
+                <th>Bowl Type</th>
+                <th>Marriage Status</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players %}
+                <tr>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.nationality }}</td>
+                    <td>{{ player.Date_of_birth }}</td>
+                    <td>{{ player.team_type.team_type }}</td>
+                    <td>{{ player.player_type }}</td>
+                    <td>{{ player.bowl_type }}</td>
+                    <td>{{ player.marriage_status }}</td>
+                    <td>{{ player.phone_number }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="8">No players available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Your Teams</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Team Name</th>
+                <th>Match Date</th>
+                <th>Players</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in user_teams %}
+                <tr>
+                    <td>{{ team.team_name }}</td>
+                    <td>{{ team.match_date }}</td>
+                    <td>
+                        {% for player in team.players.all %}
+                            {{ player.name }} <br>
+                        {% empty %}
+                            No players in this team.
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No teams available for this user.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Logout Link -->
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+
+</body>
+</html>
